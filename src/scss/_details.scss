@@ -1,0 +1,166 @@
+.poster {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2% 2%;
+  margin: 0 2%;
+  background-image: url('../assets/images/elementaire.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+  z-index: 0;
+
+  &__overlay {
+    background-color: rgba(52, 23, 23, 0.7);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  &__note {
+    align-self: flex-end;
+    float: right;
+    color: whitesmoke;
+    font-size: 1.7rem;
+    font-family: 'Montagu Slab';
+  }
+
+  &__title {
+    font-family: 'Montagu Slab', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1vh;
+    color: white;
+  }
+
+  &__synopsis {
+    width: 50%;
+  }
+
+  &__genres {
+    font-family: 'Montaga', sans-serif;
+    font-size: 1.84rem;
+    margin-bottom: 2%;
+    color: whitesmoke;
+  }
+
+  h2 {
+    font-family: 'Montagu Slab';
+    color: #b4abab;
+    font-size: 2rem;
+    font-weight: 500;
+    margin-bottom: 1%;
+
+    & + p {
+      font-family: 'Montaga';
+      margin-bottom: 2%;
+      line-height: 1.3;
+      font-size: 1.7rem;
+      color: whitesmoke;
+    }
+  }
+
+  &__options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+    margin-top: 2%;
+
+    li {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #414141;
+      border-radius: 50%;
+      padding: 1rem;
+      width: 2rem;
+      height: 2rem;
+      cursor: pointer;
+    }
+  }
+}
+
+.cast {
+  margin: 2vh 2%;
+  &__title {
+    font-family: 'Marcellus SC', sans-serif;
+    font-size: 2rem;
+    background-color: #252525;
+    padding: 1vh 2%;
+    margin-bottom: 2%;
+    color: whitesmoke;
+    text-transform: uppercase;
+  }
+
+  &__actors {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+    flex-wrap: wrap;
+  }
+
+  &__actor {
+    background-color: #ecebeb;
+    width: fit-content;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    figcaption {
+      padding: 4% 0;
+      margin-left: 4%;
+    }
+  }
+
+  &__trueName {
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    margin-bottom: 3%;
+  }
+
+  &__actingName {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 0.8rem;
+  }
+
+  &__img {
+    object-fit: cover;
+  }
+}
+
+.photos {
+  margin: 2vh 2%;
+  &__title {
+    font-family: 'Marcellus SC', sans-serif;
+    font-size: 2rem;
+    background-color: #252525;
+    padding: 1vh 2%;
+    margin-bottom: 2%;
+    color: whitesmoke;
+    text-transform: uppercase;
+  }
+
+  &__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2vw;
+    flex-wrap: wrap;
+
+    img {
+      width: 20rem;
+      object-fit: cover;
+    }
+  }
+}
+
+.footer {
+  background-color: #141111;
+  height: 10vh;
+  width: 100%;
+}

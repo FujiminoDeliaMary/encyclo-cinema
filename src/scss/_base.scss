@@ -1,0 +1,52 @@
+* {
+  box-sizing: border-box;
+
+  &::after,
+  &::before {
+    box-sizing: border-box;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 1.4rem;
+
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(2px);
+    z-index: 1; /* Assure que l'arrière-plan flou est en dessous du popup */
+    display: none;
+    transition: display 0.3s ease-in-out;
+  }
+
+  &.blur {
+    &::after {
+      transition: display 0.4s ease-in-out;
+      display: block;
+    }
+  }
+}
+
+a,
+a:hover,
+a:visited {
+  text-decoration: none;
+  // color: #fff;
+}
+
+.active {
+  color: black;
+}
