@@ -1,27 +1,12 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import api from '../services/api.service'
-
-// Importez les composants Swiper de swiper/vue
 import { Swiper, SwiperSlide } from 'swiper/vue'
-
-// Importez les modules Swiper que vous souhaitez utiliser
 import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper'
-
-// Installez les modules dans Swiper
+import { useRouter } from 'vue-router'
 SwiperCore.use([Navigation, Pagination, Autoplay])
 
-const IMG_LINK = 'https://image.tmdb.org/t/p/w500/'
-
-const createFilmSlug = (filmName) => {
-  return filmName
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/[^a-z0-9-]/g, '')
-}
-
-const latestReleases = ref([])
-const genres = ref([])
+const router = useRouter()
 
 onMounted(async () => {
   try {
@@ -35,39 +20,66 @@ onMounted(async () => {
     console.error('Erreur lors du chargement des nouvelles sorties', error)
   }
 })
+
+const goToFilmDetails = (filmId, filmName) => {
+  console.log('salut')
+  router.push({ name: 'film', params: { slug: createFilmSlug(filmName), id: filmId } })
+}
+
+const IMG_LINK = 'https://image.tmdb.org/t/p/w500/'
+
+const createFilmSlug = (filmName) => {
+  return filmName
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9-]/g, '')
+}
+
+const latestReleases = ref([])
+const genres = ref([])
+const search = ref()
+const searchResults = ref([])
+
+const handleSearch = async () => {
+  if (search.value !== '') {
+    try {
+      const results = await api.getFilmByName(search.value)
+      searchResults.value = results
+      console.log(results)
+    } catch (error) {
+      console.error('Erreur lors de la recherche:', error)
+    }
+  } else {
+    searchResults.value = []
+  }
+}
 </script>
 
 <template>
   <main>
     <section class="search">
-      <form method="get" action="index.php">
-        <input type="text" class="barreRecherche" placeholder="Entrez votre recherche" />
+      <form method="get" action="index.php" @submit.prevent="handleSearch">
+        <input
+          type="text"
+          class="barreRecherche"
+          placeholder="Entrez votre recherche"
+          v-model="search"
+          @change="handleSearch"
+        />
       </form>
-    </section>
-
-    <!-- Section de connexion -->
-    <section class="connexion">
-      <button class="connexion__close">X</button>
-      <h2 class="connexion__title">Connexion</h2>
-
-      <form action="" method="post" class="connexion__form">
-        <div class="connexion__formgroup">
-          <label for="email">Email</label><br />
-          <input id="text" type="email" />
-        </div>
-
-        <div class="connexion__formgroup">
-          <label for="Mot de passe">Mot de passe</label><br />
-          <input type="password" />
-        </div>
-
-        <button class="connexion__submit" type="submit">Connectez-vous</button>
-      </form>
-
-      <a href="#">Mot de passe oublié ?</a>
-      <p>Vous n'avez toujours pas de compte ?</p>
-
-      <a href="#">Inscrivez-vous</a>
+      <ul class="search__results" v-if="searchResults">
+        <li
+          v-for="result in searchResults"
+          :key="result.id"
+          class="item"
+          @click="goToFilmDetails(result.id, result.original_title)"
+        >
+          <p>{{ result.original_title }} - {{ result.release_date.slice(0, 4) }}</p>
+        </li>
+      </ul>
+      <!-- <ul v-if="searchResults.length === 0 && search">
+        Aucun film trouvé pour cette entrée
+      </ul> -->
     </section>
 
     <section class="presentation">
@@ -96,9 +108,7 @@ onMounted(async () => {
         class="swiper"
         navigation
         :scrollbar="{ draggable: true }"
-        centeredSlides
-        @swiper="onSwiper"
-        @slideChange="onSlideChange"
+        :centeredSlides="false"
       >
         <SwiperSlide v-for="release in latestReleases" :key="release">
           <div class="swiper-slide card">
@@ -106,13 +116,13 @@ onMounted(async () => {
               <img :src="IMG_LINK + release.poster_path" alt="poster" width="200" height="230" />
               <p class="note">
                 <i class="fas fa-solid fa-star fa-lg" style="color: #e2e52a"></i>
-                {{ release.vote_average }}&nbsp;/&nbsp;10
+                {{ Math.floor(release.vote_average, 1) }}&nbsp;/&nbsp;10
               </p>
               <div class="overlay"></div>
               <div class="options">
-                <ul class="options__list">
+                <!-- <ul class="options__list">
                   <li class="options__item">
-                    <i class="fa-solid fa-heart" style="color: #f5f5f5"></i>
+                    <img src="../assets/images/favorite.svg" alt="favoris" class="options__item" />
                   </li>
                   <li class="options__item">
                     <i class="fa-solid fa-star" style="color: #f5f5f5"></i>
@@ -123,7 +133,7 @@ onMounted(async () => {
                   <li class="options__item">
                     <i class="fa-solid fa-thumbs-down" style="color: #fafafa"></i>
                   </li>
-                </ul>
+                </ul> -->
               </div>
             </div>
 

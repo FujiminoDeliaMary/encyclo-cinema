@@ -44,26 +44,49 @@
   position: relative;
   margin: 4vh 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin-left: 2vw;
+
+  &__results {
+    width: 50%;
+
+    background-color: #eae4e4;
+    position: absolute;
+    z-index: 1000;
+    top: 5rem;
+    border-radius: 5px;
+
+    .item {
+      padding: 1rem 2rem;
+      border-bottom: 1px solid black;
+      cursor: pointer;
+      font-family: 'Switzer', sans-serif;
+      font-size: 1.5rem;
+      &:hover {
+        background-color: #fff;
+      }
+    }
+  }
 
   form {
     width: 50%;
     input {
       width: 100%;
+      height: 4rem;
       border: transparent;
       background-color: #eae4e4;
       border: none;
       transition: box-shadow 0.3s ease-out;
-      padding: 1rem 0;
-      padding-left: 1rem;
-      padding-right: 1rem;
+      padding: 1rem 1rem 0 1rem;
       border-radius: 5px;
       font-size: 1.6rem;
-      background-image: url('../assets/images/searchicon.png');
+      background-image: url('../assets/images/searchicon.svg');
       background-repeat: no-repeat;
       background-repeat: no-repeat;
       background-position: right 2% center;
+      background-size: 25px;
 
       &:focus {
         outline: none;
@@ -115,6 +138,15 @@
   }
 
   .card {
+    &__title {
+      font-size: 1.7rem;
+      font-family: 'Switzer', sans-serif;
+      transition: 0.2s all ease-in-out;
+      &:hover {
+        color: #808080;
+        transition: 0.2s all ease-in-out;
+      }
+    }
     &__image {
       position: relative;
       display: inline-block;
@@ -200,12 +232,13 @@
         }
 
         &__item {
+          z-index: 1000;
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: #252525;
+
           border-radius: 50%;
-          padding: 1rem;
+
           width: 2rem;
           height: 2rem;
         }

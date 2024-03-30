@@ -1,21 +1,23 @@
 .connexion {
   position: absolute;
-  top: 20%;
+  top: -58vh;
   right: 30%;
-  display: none;
+  display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #efebeb;
   gap: 2vh;
   padding: 2vh 1vw;
   z-index: 1000;
-  transform: scale(0.8);
-  transition: transform 0.4s ease-out;
+  transform: scale(0.5);
+  transition: transform 0.2s ease-out;
 
   &.open {
-    display: flex;
+    top: 20%;
     transform: scale(1);
-    transition: transform 0.5 ease-in-out;
+    transition:
+      transform 0.2 ease-in-out,
+      top 0.2 ease-in-out;
   }
 
   &__close {
@@ -32,7 +34,7 @@
   &__title {
     font-family: 'Marcellus SC', sans-serif;
     text-align: center;
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 800;
     margin-bottom: 2ch;
     padding: 0 5vw;
@@ -58,12 +60,17 @@
 
   &__formgroup {
     padding: 0 5vw;
+    a {
+      color: rgb(67, 130, 151);
+    }
     input {
-      width: 15rem;
+      min-width: 30rem;
+      min-height: 3.5rem;
       box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 13px;
       height: 1.7rem;
       border: none;
       padding-left: 3px;
+      font-size: 1.5rem;
 
       &:focus {
         outline: none;
@@ -72,10 +79,20 @@
 
     label {
       font-family: 'Poppins';
+      font-size: 1.7rem;
     }
   }
 
   &__submit {
-    padding: 1vh 0;
+    padding: 1vh 0.5rem;
+    font-size: 1.5rem;
+    transition: 0.2s all ease-out;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.07);
+      transition: 0.2s all ease-out;
+      color: #efebeb;
+      background-color: #141111;
+    }
   }
 }

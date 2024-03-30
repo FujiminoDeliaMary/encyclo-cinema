@@ -2,6 +2,7 @@
 import api from '@/services/api.service'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { VuePreloader } from 'vue-preloader'
 
 const detailsMovie = ref()
 const creditsMovie = ref()
@@ -46,7 +47,7 @@ const backdropUrl = computed(() => {
 </script>
 
 <template>
-  <main>
+  <main v-if="detailsMovie && writers && images && directors && creditsMovie">
     <section class="search">
       <form method="get" action="index.php">
         <input type="text" class="barreRecherche" placeholder="Entrez votre recherche" />
@@ -58,7 +59,7 @@ const backdropUrl = computed(() => {
 
       <p class="poster__note">
         <i class="fa-sharp fa-solid fa-star" style="color: #ffd233"></i>
-        {{ detailsMovie?.vote_average }} / 10
+        {{ Math.floor(detailsMovie?.vote_average) }} / 10
       </p>
       <h1 class="poster__title">{{ detailsMovie?.title }}</h1>
       <p class="poster__genres">
@@ -77,7 +78,7 @@ const backdropUrl = computed(() => {
       <p>{{ writers }}</p>
 
       <ul class="poster__options">
-        <li><img src="../assets/images/favorite_white_18dp.svg" alt="" /></li>
+        <li><font-awesome-icon :icon="['fal', 'heart']" /></li>
         <li><img src="../assets/images/add_white_18dp.svg" alt="" /></li>
         <li><img src="../assets/images/star_rate_white_18dp.svg" alt="" /></li>
         <li><img src="../assets/images/thumb_down_white_18dp.svg" alt="" /></li>
@@ -117,4 +118,21 @@ const backdropUrl = computed(() => {
       </div>
     </section>
   </main>
+  <VuePreloader class="pre-loader"> Chargement... </VuePreloader>
 </template>
+
+<style>
+.icon {
+  width: 36px;
+  height: 36px;
+  color: #222;
+  margin-left: 12px;
+}
+
+.pre-loader {
+  padding: 10px;
+  background-color: #f1f1f1;
+
+  /* Add more styles as needed */
+}
+</style>

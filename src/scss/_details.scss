@@ -1,15 +1,28 @@
 .poster {
   position: relative;
   display: flex;
+  min-height: 60vh;
   flex-direction: column;
   justify-content: center;
   padding: 2% 2%;
   margin: 0 2%;
-  background-image: url('../assets/images/elementaire.png');
+  z-index: 0;
+  overflow: hidden;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top center;
-  z-index: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: -1; /* Positionne le flou derrière le contenu */
+    filter: blur(8px); /* Ajustez le niveau de flou selon vos besoins */
+  }
 
   &__overlay {
     background-color: rgba(52, 23, 23, 0.7);

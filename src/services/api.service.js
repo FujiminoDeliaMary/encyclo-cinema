@@ -132,6 +132,22 @@ const api = {
     } catch (error) {
       console.error(error)
     }
+  },
+
+  getFilmByName: async (name) => {
+    const APIKEY = 'api_key=908cc7cc4055f869e2c682ba738e2f98'
+    const url = `https://api.themoviedb.org/3/search/movie?${APIKEY}&query=${encodeURIComponent(name)}`
+
+    return await fetch(url) // Assurez-vous de retourner la promesse ici
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Films trouvés:', data.results)
+        return data.results // Retournez seulement les résultats pour faciliter leur traitement
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la recherche de films:', error)
+        throw error // Propager l'erreur pour un traitement ultérieur
+      })
   }
 }
 
