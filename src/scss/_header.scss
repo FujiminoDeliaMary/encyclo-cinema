@@ -12,7 +12,7 @@
     font-family: 'Marcellus SC', sans-serif;
     position: relative;
     color: #efebeb;
-    font-size: 3rem;
+    font-size: 4rem;
   }
 
   &__signIn {
@@ -26,11 +26,28 @@
     color: #efebeb;
     padding: 1vh 1vh;
     font-size: 1.7rem;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Switzer', sans-serif;
     cursor: pointer;
-    // &:hover {
-    //     background-color: white;
-    //     color: black;
-    // }
+    .content {
+      display: none;
+    }
+    transition:
+      color 0.3s ease-in-out,
+      background-color 0.2s ease-in-out;
+    i {
+      color: #f1f2f3;
+      transition: color 0.3s ease-in-out;
+    }
+    &:hover {
+      background-color: white;
+      color: black;
+      transition:
+        color 0.3s ease-in-out,
+        background-color 0.2s ease-in-out;
+      i {
+        color: #141111;
+        transition: color 0.3s ease-in-out;
+      }
+    }
   }
 }

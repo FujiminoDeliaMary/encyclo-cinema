@@ -3,14 +3,11 @@ import { onMounted, ref } from 'vue'
 import api from '../services/api.service'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper'
-import { useRouter } from 'vue-router'
+import Search from '../components/SearchComponent.vue'
 SwiperCore.use([Navigation, Pagination, Autoplay])
-
-const router = useRouter()
 
 onMounted(async () => {
   try {
-    // Simulez la récupération de données pour les slides
     const data = await api.getLatestReleases()
     const dataGenres = await api.getAllGenres()
     console.log(dataGenres.genres)
@@ -20,11 +17,6 @@ onMounted(async () => {
     console.error('Erreur lors du chargement des nouvelles sorties', error)
   }
 })
-
-const goToFilmDetails = (filmId, filmName) => {
-  console.log('salut')
-  router.push({ name: 'film', params: { slug: createFilmSlug(filmName), id: filmId } })
-}
 
 const IMG_LINK = 'https://image.tmdb.org/t/p/w500/'
 
@@ -37,50 +29,11 @@ const createFilmSlug = (filmName) => {
 
 const latestReleases = ref([])
 const genres = ref([])
-const search = ref()
-const searchResults = ref([])
-
-const handleSearch = async () => {
-  if (search.value !== '') {
-    try {
-      const results = await api.getFilmByName(search.value)
-      searchResults.value = results
-      console.log(results)
-    } catch (error) {
-      console.error('Erreur lors de la recherche:', error)
-    }
-  } else {
-    searchResults.value = []
-  }
-}
 </script>
 
 <template>
   <main>
-    <section class="search">
-      <form method="get" action="index.php" @submit.prevent="handleSearch">
-        <input
-          type="text"
-          class="barreRecherche"
-          placeholder="Entrez votre recherche"
-          v-model="search"
-          @change="handleSearch"
-        />
-      </form>
-      <ul class="search__results" v-if="searchResults">
-        <li
-          v-for="result in searchResults"
-          :key="result.id"
-          class="item"
-          @click="goToFilmDetails(result.id, result.original_title)"
-        >
-          <p>{{ result.original_title }} - {{ result.release_date.slice(0, 4) }}</p>
-        </li>
-      </ul>
-      <!-- <ul v-if="searchResults.length === 0 && search">
-        Aucun film trouvé pour cette entrée
-      </ul> -->
-    </section>
+    <Search />
 
     <section class="presentation">
       <div class="presentation__overlay"></div>
@@ -104,11 +57,36 @@ const handleSearch = async () => {
       <h2 class="sorties__title">Sorties du moment</h2>
       <swiper
         :slides-per-view="5"
-        :space-between="50"
         class="swiper"
         navigation
         :scrollbar="{ draggable: true }"
         :centeredSlides="false"
+        :breakpoints="{
+          100: {
+            slidesPerView: 2, // Pour les écrans d'au moins 640px
+            spaceBetween: 10
+          },
+          340: {
+            slidesPerView: 3, // Pour les écrans d'au moins 640px
+            spaceBetween: 10
+          },
+          640: {
+            slidesPerView: 3, // Pour les écrans d'au moins 640px
+            spaceBetween: 20
+          },
+          768: {
+            slidesPerView: 4, // Pour les écrans d'au moins 768px
+            spaceBetween: 30
+          },
+          1024: {
+            slidesPerView: 4, // Pour les écrans d'au moins 1024px
+            spaceBetween: 40
+          },
+          1280: {
+            slidesPerView: 5, // Pour les écrans d'au moins 1280px
+            spaceBetween: 50
+          }
+        }"
       >
         <SwiperSlide v-for="release in latestReleases" :key="release">
           <div class="swiper-slide card">

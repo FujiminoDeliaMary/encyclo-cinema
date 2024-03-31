@@ -1,0 +1,29 @@
+/* Media query pour les grands écrans d'ordinateur */
+@media (min-width: 1200px) {
+  .poster {
+    &__synopsis {
+      width: 50%;
+    }
+  }
+
+  .search {
+    form {
+      display: flex;
+      justify-content: center;
+      input {
+        width: 50%;
+      }
+    }
+    &__results {
+      width: 50%;
+    }
+  }
+
+  .header {
+    &__signIn {
+      .content {
+        display: block;
+      }
+    }
+  }
+}

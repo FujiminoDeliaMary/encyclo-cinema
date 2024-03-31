@@ -3,6 +3,7 @@ import api from '@/services/api.service'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { VuePreloader } from 'vue-preloader'
+import SearchComponent from '@/components/SearchComponent.vue'
 
 const detailsMovie = ref()
 const creditsMovie = ref()
@@ -10,6 +11,7 @@ const directors = ref()
 const writers = ref()
 const actors = ref()
 const images = ref()
+const isLoading = ref(true)
 const { params } = useRoute()
 const IMG_URL = 'https://image.tmdb.org/t/p/w500/'
 
@@ -23,14 +25,26 @@ const getPersons = (data, role) => {
 }
 
 onMounted(async () => {
-  detailsMovie.value = await api.getDetails(parseInt(params.id, 10))
-  creditsMovie.value = await api.getCredits(parseInt(params.id, 10)) // Notez l'utilisation de `await` ici
-  images.value = await api.getPhotos(parseInt(params.id, 10))
-  if (creditsMovie.value && creditsMovie.value.crew) {
-    directors.value = getPersons(creditsMovie.value.crew, 'Directing')
-    writers.value = getPersons(creditsMovie.value.crew, 'Writing')
-    actors.value = creditsMovie.value.cast
-    console.log(images.value)
+  try {
+    const [details, credits, photos] = await Promise.all([
+      api.getDetails(parseInt(params.id, 10)),
+      api.getCredits(parseInt(params.id, 10)),
+      api.getPhotos(parseInt(params.id, 10))
+    ])
+
+    detailsMovie.value = details
+    creditsMovie.value = credits
+    images.value = photos
+
+    if (creditsMovie.value && creditsMovie.value.crew) {
+      directors.value = getPersons(creditsMovie.value.crew, 'Directing')
+      writers.value = getPersons(creditsMovie.value.crew, 'Writing')
+      actors.value = creditsMovie.value.cast
+    }
+  } catch (error) {
+    console.error('Erreur lors du chargement des données', error)
+  } finally {
+    isLoading.value = false
   }
 })
 
@@ -47,12 +61,8 @@ const backdropUrl = computed(() => {
 </script>
 
 <template>
-  <main v-if="detailsMovie && writers && images && directors && creditsMovie">
-    <section class="search">
-      <form method="get" action="index.php">
-        <input type="text" class="barreRecherche" placeholder="Entrez votre recherche" />
-      </form>
-    </section>
+  <main>
+    <SearchComponent />
 
     <section class="poster" :style="{ backgroundImage: 'url(' + backdropUrl + ')' }">
       <div class="poster__overlay"></div>
@@ -77,12 +87,12 @@ const backdropUrl = computed(() => {
       <h2>Ecrit par:</h2>
       <p>{{ writers }}</p>
 
-      <ul class="poster__options">
+      <!-- <ul class="poster__options">
         <li><font-awesome-icon :icon="['fal', 'heart']" /></li>
         <li><img src="../assets/images/add_white_18dp.svg" alt="" /></li>
         <li><img src="../assets/images/star_rate_white_18dp.svg" alt="" /></li>
         <li><img src="../assets/images/thumb_down_white_18dp.svg" alt="" /></li>
-      </ul>
+      </ul> -->
     </section>
 
     <section class="cast">
@@ -118,7 +128,6 @@ const backdropUrl = computed(() => {
       </div>
     </section>
   </main>
-  <VuePreloader class="pre-loader"> Chargement... </VuePreloader>
 </template>
 
 <style>
@@ -129,8 +138,13 @@ const backdropUrl = computed(() => {
   margin-left: 12px;
 }
 
+body {
+  overflow: auto;
+}
+
 .pre-loader {
   padding: 10px;
+  color: white;
   background-color: #f1f1f1;
 
   /* Add more styles as needed */

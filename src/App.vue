@@ -27,7 +27,8 @@ const handleChose = () => {
     </h1>
 
     <button class="header__signIn" aria-label="Se Connecter" @click="handleClick">
-      <i class="fa-solid fa-user" style="color: #f1f2f3"></i> &nbsp;Se connecter
+      <i class="fa-solid fa-user"></i> &nbsp;
+      <p class="content">Se connecter</p>
     </button>
   </header>
 
